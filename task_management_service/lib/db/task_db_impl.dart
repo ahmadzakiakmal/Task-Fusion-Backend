@@ -1,9 +1,14 @@
+import 'package:postgres/postgres.dart';
 import 'package:task_management_service/db/task_DB_abstrac.dart';
 import 'package:task_management_service/models/task.dart';
 
-class TaskDatabaseClass implements TaskDatabaseAbstract{
+class TaskDatabaseClass extends TaskDatabaseAbstract{
+  TaskDatabaseClass(super.db);
+
+  
   @override
   Future<void> createTask(Task task) {
+    
     // TODO: implement createTask
     throw UnimplementedError();
   }
@@ -28,8 +33,11 @@ class TaskDatabaseClass implements TaskDatabaseAbstract{
 
   @override
   Future<void> updateTask(Task task) {
+    
     // TODO: implement updateTask
     throw UnimplementedError();
   }
+
+
   
 }

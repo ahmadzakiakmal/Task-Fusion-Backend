@@ -1,14 +1,15 @@
 import 'package:task_management_service/db/task_DB_abstrac.dart';
 import 'package:task_management_service/models/task.dart';
 
-class TaskProjectDatabaseClass implements TaskDatabaseAbstract{ 
-  TaskProjectDatabaseClass({required this.project_id});
+class TaskProjectDatabaseClass extends TaskDatabaseAbstract{ 
+  TaskProjectDatabaseClass(super.db, {required this.project_id});
 
-  final int project_id;
+  final String project_id;
  
   
   @override
   Future<void> createTask(Task task) {
+    print("Project id : $project_id");
     // TODO: implement createTask
     throw UnimplementedError();
   }
@@ -32,9 +33,11 @@ class TaskProjectDatabaseClass implements TaskDatabaseAbstract{
   }
 
     @override
-  Future<void> deleteTask(int taskId) {
+  Future<void> deleteTask(int taskId) async{
+    print("Project id : $project_id");
+
     // TODO: implement deleteTask
-    throw UnimplementedError();
+    // throw UnimplementedError();
   }
   
   
