@@ -4,16 +4,16 @@ import 'package:task_management_service/db/database_connection.dart';
 import '../models/task.dart';
 
 abstract class TaskDatabaseAbstract{
-  final DatabaseConnecton db;
-  TaskDatabaseAbstract(this.db);
+  TaskDatabaseAbstract(this.dbConnection);
+  final DatabaseConnecton dbConnection;
   
-  Future<dynamic> createTask(Task task);
+  Future<dynamic> createTask({required Task task, int? userId});
 
-  Future<List<Task>> getAllTask();
+  Future<List<Task>> getAllTask({int? userId});
 
-  Future<Task> getTask(int taskId );
+  Future<Task> getTask({required int taskId, int? userId});
 
-  Future<dynamic> updateTask(Task task);
+  Future<dynamic> updateTask({required Task task, int? userId});
 
-  Future<dynamic> deleteTask(int taskId);
+  Future<dynamic> deleteTask({required int taskId, int? userId});
 }

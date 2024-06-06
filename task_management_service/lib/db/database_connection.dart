@@ -25,6 +25,8 @@ class DatabaseConnecton{
       _postgreSQLConnection ??= throw Exception('Database connection not initialized');
 
   Future<void> connect() async {
+
+
     try {
       _postgreSQLConnection = await Connection.open(
       Endpoint(
@@ -32,12 +34,13 @@ class DatabaseConnecton{
         database: _database,
         port:  _port, 
         username: _username, 
-        password: _password,)
+        password: _password,),
+        settings: ConnectionSettings(sslMode: SslMode.disable)
       );
-      log('Database connection successful');
+      print('Database connection successful');
       
     } catch (e) {
-      log('Database connection failed: $e');
+      print('Database connection failed: $e');
     }
   }
 
