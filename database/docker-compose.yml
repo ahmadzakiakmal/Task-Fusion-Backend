@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: taskfusion
+      POSTGRES_USER: taskfusion
+      POSTGRES_PASSWORD: supersecret
+    ports:
+      - "5432:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    environment:
+      ADMINER_DESIGN: dracula
+    ports:
+      - "3333:8080"
