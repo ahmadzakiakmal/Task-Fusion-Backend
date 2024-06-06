@@ -34,6 +34,23 @@ class Task{
       deadline: deadline?? this.deadline);
   }
 
+  Task copyWithTaskProject({
+    required int id,
+    required int project_id,
+    String? title,
+    String? description,
+    String? milestone,
+    DateTime? deadline
+  }){
+    return Task(
+      id: id,
+      project_id: project_id,
+      title: title?? this.title, description: description?? this.description, 
+      milestone: milestone?? this.milestone, 
+      created: created, 
+      deadline: deadline?? this.deadline);
+  }
+
   Map<String, dynamic> toJson() => _$TaskToJson(this);
 
 }
