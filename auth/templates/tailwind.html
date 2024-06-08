@@ -1,0 +1,55 @@
+{{ define "header" }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+   <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-gray-100">
+    <header class="bg-gradient-to-r from-blue-800 to-indigo-800">
+      <nav class="px-8 py-6 flex items-center text-white">
+      <div class="text-4xl pr-12 font-serif"><a href="/">TaskFusion</a></div> 
+       <div>
+          {{if currentUser}}
+          <form action="/signout" method="post" class="inline pr-4">
+            <button type="submit">Sign Out</button>
+          </form>
+          {{else}}
+         <a href="signin">Sign in</a>
+         <a class="px-4 py-2 bg-blue-700 hover:bg-blue-600" href="/signup">Sign up</a>
+          {{end}}
+       </div>
+      </nav>
+    </header>
+    <!-- Alerts -->
+    {{if errors}}
+    <div class="py-4 px-2">
+      {{ range errors }}
+      <div class="closeable flex bg-red-100 rounded px-2 py-2 text-red-800 mb-2">
+        <div class="flex-grow">
+          {{.}}
+        </div>
+        <a href="#" onclick="closeAlert(event)">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </a>
+      </div>
+      {{ end }}
+    </div>
+    {{ end }}
+{{ end }}
+  
+
+{{ define "footer" }}
+    <script>
+    function closeAlert(event) {
+      let closeable = event.target.closest(".closeable");
+      closeable.remove()
+    }
+    </script>
+  </body>
+</html>
+{{ end }}
