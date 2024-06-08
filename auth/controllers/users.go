@@ -23,17 +23,31 @@ type UserOutput struct {
 	Name  string `json:"name"`
 }
 
+type RegisterBody struct {
+	Email           string `json:"email"`
+	Name            string `json:"name"`
+	Password        string `json:"password"`
+	PasswordConfirm string `json:"password_confirm"`
+}
+
+type SigninBody struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 func (u Users) Create(w http.ResponseWriter, r *http.Request) {
-	var data struct {
-		Email           string
-		Name            string
-		Password        string
-		PasswordConfirm string
+	var data RegisterBody
+
+	if r.Body == nil {
+		http.Error(w, "Please send a request body", http.StatusBadRequest)
+		return
 	}
-	data.Email = r.PostFormValue("email")
-	data.Name = r.PostFormValue("name")
-	data.Password = r.PostFormValue("password")
-	data.PasswordConfirm = r.PostFormValue("password-confirm")
+
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&data); err != nil {
+		http.Error(w, "Invalid Json", http.StatusBadRequest)
+		return
+	}
 
 	if data.Password != data.PasswordConfirm {
 		http.Error(w, "Password and PasswordConfirm does not match", http.StatusBadRequest)
@@ -71,13 +85,18 @@ func (u Users) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u Users) ProcessSignIn(w http.ResponseWriter, r *http.Request) {
-	var data struct {
-		Email    string
-		Password string
+	var data SigninBody
+
+	if r.Body == nil {
+		http.Error(w, "Please send a request body", http.StatusBadRequest)
+		return
 	}
 
-	data.Email = r.FormValue("email")
-	data.Password = r.FormValue("password")
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&data); err != nil {
+		http.Error(w, "Invalid Json", http.StatusBadRequest)
+		return
+	}
 
 	user, err := u.UserService.Authenticate(data.Email, data.Password)
 	if err != nil {
@@ -133,10 +152,20 @@ func (u Users) ProcessSignOut(w http.ResponseWriter, r *http.Request) {
 
 func (u Users) ProcessForgotPassword(w http.ResponseWriter, r *http.Request) {
 	var data struct {
-		Email string
+		Email string `json:"email"`
 	}
 
-	data.Email = r.FormValue("email")
+	if r.Body == nil {
+		http.Error(w, "please send a request body", http.StatusBadRequest)
+		return
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&data); err != nil {
+		http.Error(w, "Invalid json", http.StatusBadRequest)
+		return
+	}
+
 	pwReset, err := u.PasswordResetService.Create(data.Email)
 	if err != nil {
 		// TODO: handle other cases in the future, for instance, if a user does not exist with that email address
@@ -160,11 +189,20 @@ func (u Users) ProcessForgotPassword(w http.ResponseWriter, r *http.Request) {
 
 func (u Users) ProcessResetPassword(w http.ResponseWriter, r *http.Request) {
 	var data struct {
-		Token    string
-		Password string
+		Token    string `json:"token"`
+		Password string `json:"password"`
 	}
-	data.Token = r.FormValue("token")
-	data.Password = r.FormValue("password")
+
+	if r.Body == nil {
+		http.Error(w, "Please send a request body", http.StatusBadRequest)
+		return
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&data); err != nil {
+		http.Error(w, "invalid json", http.StatusBadRequest)
+		return
+	}
 
 	user, err := u.PasswordResetService.Consume(data.Token)
 	if err != nil {
