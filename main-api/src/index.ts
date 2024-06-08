@@ -1,6 +1,8 @@
 import { buildSchema } from "graphql"
 import express from "express"
 import { graphqlHTTP } from "express-graphql"
+import fs from 'fs';
+import path from 'path';
 
 const users = [
   { id: 1, name: "John Doe", email: "johndoe@gmail.com" },
@@ -72,6 +74,16 @@ const root = {
 }
 
 const app = express()
+
+app.use("/", (req, res) => {
+  const htmlPath = path.join(__dirname, "index.html");
+  fs.readFile(htmlPath, "utf8", (err, data) => {
+    if(err) {
+      return res.status(500).send("<h1>Internal Server Error: Error Reading HTML</h1>")
+    }
+    res.status(200).send(data)
+  })
+})
 
 app.use(
     "/graphql",
