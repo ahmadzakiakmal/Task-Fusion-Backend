@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: taskfusion
+      POSTGRES_USER: taskfusion
+      POSTGRES_PASSWORD: supersecret
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  auth:
+    build: ./auth-service
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+    depends_on:
+      - db
+
+  project-management:
+    build: ./project-management-service
+    restart: always
+    environment:
+      DATABASE_URL: "jdbc:postgresql://db:5432/taskfusion"
+      DATABASE_USERNAME: taskfusion
+      DATABASE_PASSWORD: supersecret
+    ports: 
+      - "8080:8011"
+    networks:
+      - backend
+    depends_on:
+      - auth
+
+networks:
+  backend:
+    driver: bridge
+
