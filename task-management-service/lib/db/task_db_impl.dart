@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-import 'package:task_management_service/db/task_DB_abstrac.dart';
+import 'package:task_management_service/db/task_db_abstrac.dart';
 import 'package:task_management_service/models/task.dart';
 
 class TaskDatabaseClass extends TaskDatabaseAbstract{

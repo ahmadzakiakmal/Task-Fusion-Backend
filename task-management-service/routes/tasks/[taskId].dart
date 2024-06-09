@@ -61,12 +61,12 @@ final getTask = await todoDatabaseClass.getTask(
   );
 
 
-
+  final updateDeadline = body['deadline'] != null ? DateTime.tryParse(   body['deadline'] as String):null;
 
   final title = body['title'] as String?;
   final description = body['description'] as String?;
   final milestone = body['milestone'] as String?;
-  final deadline = DateTime.now();
+  final deadline = updateDeadline;
   final newTask = getTask.copyWithTask(
     id: int.tryParse(taskId)??0,
     user_id: userId,

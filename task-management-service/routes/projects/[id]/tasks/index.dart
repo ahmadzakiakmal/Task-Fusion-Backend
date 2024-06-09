@@ -40,11 +40,11 @@ Future<Response> _create(RequestContext context)async{
   final description = body['description'] as String;
   final milestone = body['milestone'] as String;
   final created = DateTime.now();
-  final deadline = DateTime.now();
+  final deadline = DateTime.tryParse(   body['deadline'] as String);
   final newTask = Task( title: title, description: description, 
   milestone: milestone, 
   created: created, 
-  deadline: deadline);
+  deadline: deadline?? DateTime.now());
    await taskProjectDatabaseClass.createTask(task: newTask,);
   return Response.json(
     statusCode: 201,

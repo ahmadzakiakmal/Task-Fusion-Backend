@@ -41,8 +41,8 @@ Future<Response> _create(RequestContext context)async{
   final description = body['description'] as String;
   final milestone = body['milestone'] as String;
   final created = DateTime.now();
-  final deadline = DateTime.now();
-  final newTask = Task( title: title, description: description, milestone: milestone, created: created, deadline: deadline);
+  final deadline = DateTime.tryParse(   body['deadline'] as String);
+  final newTask = Task( title: title, description: description, milestone: milestone, created: created, deadline: deadline?? DateTime.now());
    await todoDatabaseClass.createTask(task: newTask, userId: userId);
   return Response.json(
     statusCode: 201,

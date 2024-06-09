@@ -1,17 +1,16 @@
 import 'dart:developer';
+import 'dart:io';
 
-import 'package:dotenv/dotenv.dart';
 import 'package:postgres/postgres.dart';
 
 class DatabaseConnecton{
-  DatabaseConnecton(this._dotEnv){
-     _host = _dotEnv['DB_HOST'] ?? 'localhost';
-    _port = int.tryParse(_dotEnv['DB_PORT'] ?? '') ?? 5432;
-    _database = _dotEnv['DB_DATABASE'] ?? 'test';
-    _username = _dotEnv['DB_USERNAME'] ?? 'test';
-    _password = _dotEnv['DB_PASSWORD'] ?? 'test';
+  DatabaseConnecton(){
+     _host = Platform.environment['DB_HOST']?? "localhost";
+    _port = int.tryParse(Platform.environment['DB_PORT'] ?? '') ?? 5432;
+    _database = Platform.environment['DB_DATABASE'] ?? 'test';
+    _username = Platform.environment['DB_USERNAME'] ?? 'test';
+    _password = Platform.environment['DB_PASSWORD'] ?? 'test';
   }
-  final DotEnv _dotEnv;
 
   late final String _host;
   late final int _port;
