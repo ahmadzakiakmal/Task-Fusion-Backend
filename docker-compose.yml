@@ -15,7 +15,7 @@ services:
     build: ./auth-service
     restart: always
     ports:
-      - "3000:3000"
+      - "5003:3000"
     networks:
       - backend
     depends_on:
@@ -29,11 +29,17 @@ services:
       DATABASE_USERNAME: taskfusion
       DATABASE_PASSWORD: supersecret
     ports: 
-      - "8080:8011"
+      - "5002:8011"
     networks:
       - backend
     depends_on:
       - auth
+
+  notification-service:
+    build: ./notification-service
+    restart: always
+    ports:
+      - "5001:5001"
 
 networks:
   backend:
