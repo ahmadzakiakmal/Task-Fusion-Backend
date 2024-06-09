@@ -35,9 +35,29 @@ services:
     depends_on:
       - auth
 
+  task-management:
+    build: ./task-management-service
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432  
+      DB_DATABASE: taskfusion  
+      DB_USERNAME: taskfusion 
+      DB_PASSWORD: supersecret
+    ports: 
+      - "5004:8080"
+    networks:
+      - backend
+    depends_on:
+      - auth
+
   notification-service:
     build: ./notification-service
     restart: always
+    environment:
+      KAFKA_BROKER: 48.216.224.217:9092
+    depends_on:
+      - auth
     ports:
       - "5001:5001"
 
