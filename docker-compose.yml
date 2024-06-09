@@ -55,11 +55,13 @@ services:
     build: ./notification-service
     restart: always
     environment:
-      KAFKA_BROKER: 48.216.224.217:9092
+      KAFKA_BROKER: <<secret>>
     depends_on:
       - auth
     ports:
       - "5001:5001"
+    networks:
+      - backend
 
 networks:
   backend:
