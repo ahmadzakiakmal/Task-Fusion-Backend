@@ -19,7 +19,6 @@ public class Project {
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
-  //getters and setters
 
   public Long getId() {
     return id;
