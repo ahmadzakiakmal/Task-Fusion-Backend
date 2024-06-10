@@ -5,8 +5,9 @@ import path from "path";
 import dotenv from "dotenv";
 import schema from "./schemas/schema";
 import root from "./resolvers/resolvers";
-// Load environment variables from .env file
-dotenv.config();
+
+dotenv.config({debug: true});
+console.log(process.env.PORT);
 
 const app = express();
 
@@ -36,3 +37,4 @@ app.listen(PORT, () => {
   console.log(`Running a GraphQL API server at http://localhost:${PORT}/graphql`);
   console.log(`HTML file is served at http://localhost:${PORT}/`);
 });
+
