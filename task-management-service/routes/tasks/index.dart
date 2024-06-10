@@ -19,8 +19,9 @@ Future<Response> onRequest(RequestContext context)async{
 
 
 Future<Response> _getAllTask(RequestContext context)async{
-   final body = await context.request.json();
-  final userId = body['userId'] as int;
+  final request = context.request;
+  final params = request.uri.queryParameters;
+   final userId = int.tryParse(params['userId'] as String);
   final todoDatabaseClass = context.read<TaskDatabaseClass>();
   final allTask = await todoDatabaseClass.getAllTask(userId: userId);
   return Response.json(

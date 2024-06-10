@@ -18,9 +18,10 @@ Future<Response> onRequest(RequestContext context, String taskId)async{
 
 Future<Response> _get(RequestContext context, String taskId)async{
   try{
-    final body = await context.request.json();
 
-  final userId = body['userId'] as int;
+  final request = context.request;
+  final params = request.uri.queryParameters;
+   final userId = int.tryParse(params['userId'] as String);
   final todoDatabaseClass = context.read<TaskDatabaseClass>();
   final getTask = await todoDatabaseClass.getTask(taskId: int.tryParse(taskId)??0, userId: userId);
   return Response.json(
