@@ -6,8 +6,14 @@ const schema = buildSchema(`
     error: String
   }
 
+  type ProfileResponse {
+    id: Int!
+    email: String!
+    name: String!
+  }
+
   type Query {
-    get(email: String!): String
+    myProfile: ProfileResponse
   }
 
   type Mutation {

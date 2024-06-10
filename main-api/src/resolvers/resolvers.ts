@@ -32,6 +32,9 @@ const root = {
   }) => {
     return authAPI.signIn({ email, password });
   },
+  myProfile: async () => {
+    return authAPI.myProfile();
+  }
 };
 
 export default root;
