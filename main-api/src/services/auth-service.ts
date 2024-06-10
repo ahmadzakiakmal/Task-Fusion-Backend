@@ -2,6 +2,7 @@ import axios, { AxiosResponse, isAxiosError } from "axios";
 import { Request, Response } from "express";
 
 const authURL = process.env.AUTH_SERVICE;
+
 const signUp = (req: Request, res: Response) => {
   const {
     email,
@@ -30,4 +31,20 @@ const signUp = (req: Request, res: Response) => {
     });
 };
 
-export const authServices = { signUp };
+const signIn = (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  axios
+    .post(authURL + "/signin", { email, password })
+    .then((resp) => {
+      res.send(resp.data);
+    })
+    .catch((err) => {
+      if (isAxiosError(err)) {
+        console.log(err.response?.data);
+        return res.status(Number(err.response?.status)).send({ error: err.name, detail: err.response?.data });
+      }
+      res.status(500).send(err);
+    });
+};
+
+export const authServices = { signUp, signIn };
