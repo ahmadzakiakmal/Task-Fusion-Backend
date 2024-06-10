@@ -98,9 +98,9 @@ final getTask = await todoDatabaseClass.getTask(
 }
 
 Future<Response> _delete(RequestContext context, String taskId)async{
-    final body = await context.request.json();
-
-  final userId = body['userId'] as int;
+      final request = context.request;
+  final params = request.uri.queryParameters;
+   final userId = int.tryParse(params['userId'] as String);
   final todoDatabaseClass = context.read<TaskDatabaseClass>();
   try{
     await todoDatabaseClass.deleteTask(taskId: int.tryParse(taskId)??0, userId: userId);
