@@ -88,26 +88,26 @@ public class ProjectController {
     }
 
     @DeleteMapping("/kick")
-    public ResponseEntity<Object> removeMemberFromProject(@RequestBody InviteRequestProject inviteRequestProject ,@RequestParam Long userMasterId ) {
+    public ResponseEntity<Object> removeMemberFromProject(@RequestParam Long userMasterId, @RequestParam Long userId, @RequestParam Long projectId ) {
         if (projectRepository.userExists(userMasterId) == 0) {
             return new ResponseEntity<>(new ApiResponse(false, "Master User not found"), HttpStatus.NOT_FOUND);
         }
-        if (projectRepository.userExists(inviteRequestProject.getUserId()) == 0) {
+        if (projectRepository.userExists(userId) == 0) {
             return new ResponseEntity<>(new ApiResponse(false, "User not found"), HttpStatus.NOT_FOUND);
         }
-        if (projectRepository.projectExists(inviteRequestProject.getProjectId()) == 0) {
+        if (projectRepository.projectExists(projectId) == 0) {
             return new ResponseEntity<>(new ApiResponse(false, "Project not found"), HttpStatus.NOT_FOUND);
         }
         if (projectRepository.userMaster(userMasterId) == 0) {
             return new ResponseEntity<>(new ApiResponse(false, "userMasterId is not master"), HttpStatus.NOT_FOUND);
         }
 
-        if (projectRepository.alreadyInvited(inviteRequestProject.getUserId(), inviteRequestProject.getProjectId()) == 0) {
+        if (projectRepository.alreadyInvited(userId,projectId) == 0) {
             return new ResponseEntity<>(new ApiResponse(false, "User already removed"), HttpStatus.NOT_FOUND);
         }
 
         
-        projectRepository.removeUserFromProject(inviteRequestProject.getUserId(), inviteRequestProject.getProjectId());
+        projectRepository.removeUserFromProject(userId, projectId);
 
 
         
@@ -127,11 +127,19 @@ public class ProjectController {
         
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteProject(@PathVariable Long id) {
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<Object> deleteProject(  @PathVariable Long projectId, @RequestParam Long userMasterId) {
         try {
-            if ( projectRepository.existsById(id)) {
-                projectRepository.deleteById(id);
+
+            if (projectRepository.userExistInProjectUser(userMasterId) == 0) {
+                return new ResponseEntity<>(new ApiResponse(false, "User not created project yet"), HttpStatus.NOT_FOUND);
+            }
+            if (projectRepository.userMaster(userMasterId) == 0) {
+                return new ResponseEntity<>(new ApiResponse(false, "userMasterId is not master"), HttpStatus.NOT_FOUND);
+            }
+        
+            if ( projectRepository.existsById(projectId)) {
+                projectRepository.deleteById(projectId);
                 return new ResponseEntity<>(new ApiResponse(true, "Project deleted successfully"), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(new ApiResponse(false, "Project not found"), HttpStatus.NOT_FOUND);

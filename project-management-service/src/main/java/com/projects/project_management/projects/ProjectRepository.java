@@ -15,9 +15,16 @@ public interface ProjectRepository extends JpaRepository<Project, Long>{
 
     @Query(value = "SELECT COUNT(*) FROM Project WHERE id = :projectId", nativeQuery = true)
     int projectExists(@Param("projectId") Long projectId);
+
+    @Query(value = "SELECT COUNT(*) FROM Project_user WHERE user_id = :userId", nativeQuery = true)
+    int userExistInProjectUser(@Param("userId") Long userId);
+
+    
     
     @Query(value = "SELECT COUNT(*) FROM Project_user WHERE user_id = :userId and is_master = True", nativeQuery = true)
     int userMaster(@Param("userId") Long userId);
+
+    
 
     
     @Query(value = "SELECT COUNT(*) FROM Project_user WHERE user_id = :userId and project_id = :projectId", nativeQuery = true)
