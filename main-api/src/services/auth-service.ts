@@ -47,4 +47,19 @@ const signIn = (req: Request, res: Response) => {
     });
 };
 
-export const authServices = { signUp, signIn };
+const myProfile = (req: Request, res: Response) => {
+  axios
+    .get(authURL + "/users/me", { withCredentials: true })
+    .then((resp) => {
+      res.send(resp.data);
+    })
+    .catch((err) => {
+      if (isAxiosError(err)) {
+        console.log(err.response);
+        return res.status(Number(err.response?.status)).send({ error: err.name, detail: err.response?.data });
+      }
+      res.status(500).send(err);
+    });
+};
+
+export const authServices = { signUp, signIn, myProfile };

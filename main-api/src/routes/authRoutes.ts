@@ -5,6 +5,7 @@ import { authServices } from "../services/auth-service";
 const authRoutes = express.Router();
 
 authRoutes.post("/signup", authServices.signUp);
-authRoutes.post("/signin", authServices.signIn)
+authRoutes.post("/signin", authServices.signIn);
+authRoutes.get("/me", authServices.myProfile);
 
 export default authRoutes;
