@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class ProjectController {
 
     @GetMapping
     public List<Project> getAllProjects() {
+       
         return projectRepository.findAll();
     }
 
@@ -43,13 +45,75 @@ public class ProjectController {
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse(false, "An error occurred"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+
         
     }
 
     @PostMapping
-    public Project createpProject(@RequestBody Project project) {
-        return projectRepository.save(project);
+    public ResponseEntity<Object> createProject(@RequestBody Project project, @RequestParam Long userId) {
+        if (projectRepository.userExists(userId) == 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "User not found"), HttpStatus.NOT_FOUND);
+        }
+        Project result = projectRepository.save(project);
+        projectRepository.createRelationUserProject(userId, result.getId());
+        return new ResponseEntity<>( result , HttpStatus.OK);
     }
+
+    @PostMapping("/invite")
+    public ResponseEntity<Object> inviteMemberToProject(@RequestBody InviteRequestProject inviteRequestProject ,@RequestParam Long userMasterId ) {
+        if (projectRepository.userExists(userMasterId) == 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "Master User not found"), HttpStatus.NOT_FOUND);
+        }
+        if (projectRepository.userExists(inviteRequestProject.getUserId()) == 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "User not found"), HttpStatus.NOT_FOUND);
+        }
+        if (projectRepository.projectExists(inviteRequestProject.getProjectId()) == 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "Project not found"), HttpStatus.NOT_FOUND);
+        }
+        if (projectRepository.userMaster(userMasterId) == 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "userMasterId is not master"), HttpStatus.NOT_FOUND);
+        }
+
+        if (projectRepository.alreadyInvited(inviteRequestProject.getUserId(), inviteRequestProject.getProjectId()) != 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "User already invited"), HttpStatus.NOT_FOUND);
+        }
+
+        
+        projectRepository.inviteUserToProject(inviteRequestProject.getUserId(), inviteRequestProject.getProjectId());
+
+
+        
+        return new ResponseEntity<>(new ApiResponse(true, "Successfully invite user to project"), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/kick")
+    public ResponseEntity<Object> removeMemberFromProject(@RequestBody InviteRequestProject inviteRequestProject ,@RequestParam Long userMasterId ) {
+        if (projectRepository.userExists(userMasterId) == 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "Master User not found"), HttpStatus.NOT_FOUND);
+        }
+        if (projectRepository.userExists(inviteRequestProject.getUserId()) == 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "User not found"), HttpStatus.NOT_FOUND);
+        }
+        if (projectRepository.projectExists(inviteRequestProject.getProjectId()) == 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "Project not found"), HttpStatus.NOT_FOUND);
+        }
+        if (projectRepository.userMaster(userMasterId) == 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "userMasterId is not master"), HttpStatus.NOT_FOUND);
+        }
+
+        if (projectRepository.alreadyInvited(inviteRequestProject.getUserId(), inviteRequestProject.getProjectId()) == 0) {
+            return new ResponseEntity<>(new ApiResponse(false, "User already removed"), HttpStatus.NOT_FOUND);
+        }
+
+        
+        projectRepository.removeUserFromProject(inviteRequestProject.getUserId(), inviteRequestProject.getProjectId());
+
+
+        
+        return new ResponseEntity<>(new ApiResponse(true, "Successfully remove user from project"), HttpStatus.OK);
+    }
+    
 
     @PutMapping("/{id}")
     public Project updateProject(@PathVariable Long id, @RequestBody Project project) {
