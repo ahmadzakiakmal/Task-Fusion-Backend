@@ -81,7 +81,23 @@ func (u Users) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	setCookie(w, CookieSession, session.Token)
-	http.Redirect(w, r, "/users/me", http.StatusFound)
+	type TokenReturn struct {
+		Token string `json:"token"`
+	}
+	tokenoutput := TokenReturn{
+		Token: session.Token,
+	}
+	fmt.Println(session.Token)
+
+	buff, err := json.Marshal(&tokenoutput)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "error marshalling output", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprint(w, string(buff))
 }
 
 func (u Users) ProcessSignIn(w http.ResponseWriter, r *http.Request) {
@@ -113,7 +129,22 @@ func (u Users) ProcessSignIn(w http.ResponseWriter, r *http.Request) {
 	}
 
 	setCookie(w, CookieSession, session.Token)
-	http.Redirect(w, r, "/users/me", http.StatusFound)
+	type TokenReturn struct {
+		Token string `json:"token"`
+	}
+	tokenoutput := TokenReturn{
+		Token: session.Token,
+	}
+
+	buff, err := json.Marshal(&tokenoutput)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "error marshalling output", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprint(w, string(buff))
 }
 
 func (u Users) CurrentUser(w http.ResponseWriter, r *http.Request) {
@@ -131,6 +162,7 @@ func (u Users) CurrentUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprint(w, string(buff))
 }
 
