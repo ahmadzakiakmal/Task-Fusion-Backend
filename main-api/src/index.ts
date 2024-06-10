@@ -4,14 +4,16 @@ import path from "path";
 import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes";
+import projectRoutes from "./routes/ProjectManagementRoutes";
 
-dotenv.config({debug: true});
+dotenv.config({ debug: true });
 console.log(process.env.PORT);
 
 const app = express();
 app.use(express.json());
 
-app.use( "/auth", authRoutes)
+app.use("/auth", authRoutes);
+app.use("/project", projectRoutes);
 
 // Endpoint to send the HTML file
 app.get("/", (req, res) => {
