@@ -1,15 +1,17 @@
 import express from "express";
-import { graphqlHTTP } from "express-graphql";
 import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
-import schema from "./schemas/schema";
-import root from "./resolvers/resolvers";
+
+import authRoutes from "./routes/authRoutes";
 
 dotenv.config({debug: true});
 console.log(process.env.PORT);
 
 const app = express();
+app.use(express.json());
+
+app.use( "/auth", authRoutes)
 
 // Endpoint to send the HTML file
 app.get("/", (req, res) => {
@@ -23,18 +25,8 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-  })
-);
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Running a GraphQL API server at http://localhost:${PORT}/graphql`);
-  console.log(`HTML file is served at http://localhost:${PORT}/`);
+  console.log(`Serving at http://localhost:${PORT}/`);
 });
 
