@@ -81,6 +81,23 @@ const forgotPassword = (req: Request, res: Response) => {
     });
 };
 
-const resetPassword = (req: Request, res: Response) => {};
+const resetPassword = (req: Request, res: Response) => {
+  const { token, password } = req.body;
+  axios
+    .post(authURL + "/reset-pw", { token, password })
+    .then((resp) => {
+      res.send(resp);
+    })
+    .catch((err) => {
+      if (isAxiosError(err)) {
+        console.log(err);
+        return res
+          .status(isNaN(Number(err.response?.status)) ? 500 : Number(err.response?.status))
+          .send({ error: err.name, detail: err.response?.data });
+      }
+      console.log(err);
+      res.status(500).send(err);
+    });
+};
 
 export const authServices = { signUp, signIn, myProfile, forgotPassword, resetPassword };
