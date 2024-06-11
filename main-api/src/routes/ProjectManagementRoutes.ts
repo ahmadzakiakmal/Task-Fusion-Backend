@@ -9,5 +9,6 @@ projectRoutes.get("/all", projectManagementServices.getAllProjects);
 projectRoutes.get("/:projectId", projectManagementServices.getOneProject);
 projectRoutes.delete("/:projectId/:userMasterId", projectManagementServices.deleteProject);
 projectRoutes.put("/:projectId", projectManagementServices.editProject);
+projectRoutes.post("/invite/:projectId", projectManagementServices.addMember);
 
 export default projectRoutes;
