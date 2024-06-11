@@ -5,10 +5,12 @@ const taskManagementURL = process.env.TASK_MANAGEMENT_SERVICE;
 
 const getOneTask = (req: Request, res: Response) => {
   const { taskId, userId } = req.params;
+  console.log(taskManagementURL + `/tasks/${taskId}?userId=${userId}`);
   axios
-    .post(taskManagementURL + `/tasks/${taskId}?userId=${userId}`)
+    .get(taskManagementURL + `/tasks/${taskId}?userId=${userId}`)
     .then((resp) => {
       res.send(resp.data);
+      console.log("response:", resp)
     })
     .catch((err) => {
       console.log(err);
