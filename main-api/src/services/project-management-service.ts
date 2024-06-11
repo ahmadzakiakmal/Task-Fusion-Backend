@@ -49,7 +49,7 @@ const getUserProjects = (req: Request, res: Response) => {
     .then((resp) => {
       res.send({
         userId,
-        projectManagementServices: resp.data
+        projectManagementServices: resp.data,
       });
     })
     .catch((err) => {
@@ -64,7 +64,25 @@ const getUserProjects = (req: Request, res: Response) => {
     });
 };
 
-const deleteProject = () => {};
+const deleteProject = (req: Request, res: Response) => {
+  const { projectId, userMasterId } = req.params;
+  console.log(projectId, userMasterId);
+  axios
+    .delete(projectManagementURL + `/projects/${projectId}?userMasterId=${userMasterId}`)
+    .then((resp) => {
+      res.send(resp.data);
+    })
+    .catch((err) => {
+      // console.log(err);
+      if (isAxiosError(err)) {
+        // console.log(err);
+        return res
+          .status(isNaN(Number(err.response?.status)) ? 500 : Number(err.response?.status))
+          .send({ error: err.name, detail: err.response?.data });
+      }
+      res.status(500).send(err);
+    });
+};
 
 const editProject = () => {};
 
