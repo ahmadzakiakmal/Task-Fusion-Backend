@@ -67,7 +67,7 @@ services:
     build: ./main-api
     restart: always
     env_file:
-      - .env
+      - ./main-api/.env
     networks:
       - backend
 
