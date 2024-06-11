@@ -47,7 +47,10 @@ const getUserProjects = (req: Request, res: Response) => {
   axios
     .get(projectManagementURL + "/projects?userId=" + userId)
     .then((resp) => {
-      res.send(resp.data);
+      res.send({
+        userId,
+        projectManagementServices: resp.data
+      });
     })
     .catch((err) => {
       console.log(err);
