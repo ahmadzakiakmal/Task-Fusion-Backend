@@ -41,14 +41,14 @@ const getAllProjects = (req: Request, res: Response) => {
     });
 };
 
-const getUserProjects = (req: Request, res: Response) => {
-  const { userId } = req.params;
-  console.log(userId);
+const getOneProject = (req: Request, res: Response) => {
+  const { projectId } = req.params;
+  console.log(projectId);
   axios
-    .get(projectManagementURL + "/projects?userId=" + userId)
+    .get(projectManagementURL + "/projects/" + projectId)
     .then((resp) => {
       res.send({
-        userId,
+        userId: projectId,
         projectManagementServices: resp.data,
       });
     })
@@ -66,7 +66,6 @@ const getUserProjects = (req: Request, res: Response) => {
 
 const deleteProject = (req: Request, res: Response) => {
   const { projectId, userMasterId } = req.params;
-  console.log(projectId, userMasterId);
   axios
     .delete(projectManagementURL + `/projects/${projectId}?userMasterId=${userMasterId}`)
     .then((resp) => {
@@ -93,7 +92,7 @@ const removeMember = () => {};
 export const projectManagementServices = {
   createProject,
   getAllProjects,
-  getUserProjects,
+  getOneProject,
   deleteProject,
   editProject,
   addMember,
