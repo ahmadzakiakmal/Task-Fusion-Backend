@@ -35,7 +35,21 @@ const createTask = (req: Request, res: Response) => {
     });
 };
 
-const editTask = (req: Request, res: Response) => {};
+const editTask = (req: Request, res: Response) => {
+  const { userId, title, description, milestone, deadline } = req.body;
+  const { taskId } = req.params;
+  axios
+    .put(taskManagementURL + "/tasks/" + taskId, { userId, title, description, milestone, deadline })
+    .then((resp) => res.send(resp.data))
+    .catch((err) => {
+      console.log(err);
+      if (isAxiosError(err)) {
+        console.log(err.response?.data);
+        return res.status(Number(err.response?.status)).send({ error: err.name, detail: err.response?.data });
+      }
+      res.status(500).send(err);
+    });
+};
 
 const deleteTask = (req: Request, res: Response) => {};
 

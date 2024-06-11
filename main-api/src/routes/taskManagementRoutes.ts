@@ -5,5 +5,6 @@ const taskManagementRoutes = express.Router();
 
 taskManagementRoutes.get("/", taskManagementServices.createTask);
 taskManagementRoutes.post("/:taskId/:projectId", taskManagementServices.getOneTask);
+taskManagementRoutes.put("/:taskId", taskManagementServices.editTask);
 
 export default taskManagementRoutes;
