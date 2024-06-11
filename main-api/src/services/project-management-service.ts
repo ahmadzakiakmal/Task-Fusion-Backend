@@ -5,10 +5,8 @@ import projectRoutes from "../routes/ProjectManagementRoutes";
 const projectManagementURL = process.env.PROJECT_MANAGEMENT_SERVICE;
 
 const createProject = (req: Request, res: Response) => {
-  console.log(projectManagementURL);
   const { title, description } = req.body;
   const { userId } = req.params;
-  console.log(userId)
   axios
     .post(projectManagementURL + "/projects?userId=" + userId, { title, description })
     .then((resp) => {
