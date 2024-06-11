@@ -121,7 +121,25 @@ const addMember = (req: Request, res: Response) => {
     });
 };
 
-const removeMember = () => {};
+const removeMember = (req: Request, res: Response) => {
+  const { userMasterId, userId, projectId } = req.params;
+  axios
+    .delete(
+      projectManagementURL + `/projects/kick?userMasterId=${userMasterId}&userId=${userId}&projectId=${projectId}`
+    )
+    .then((resp) => {
+      res.send(resp.data);
+    })
+    .catch((err) => {
+      if (isAxiosError(err)) {
+        // console.log(err);
+        return res
+          .status(isNaN(Number(err.response?.status)) ? 500 : Number(err.response?.status))
+          .send({ error: err.name, detail: err.response?.data });
+      }
+      res.status(500).send(err);
+    });
+};
 
 export const projectManagementServices = {
   createProject,
