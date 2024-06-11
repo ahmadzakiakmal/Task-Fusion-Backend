@@ -20,11 +20,11 @@ app.use("/notification", notificationRoutes);
 app.use("/task", taskManagementRoutes);
 
 // Endpoint to send the HTML file
-app.get("/", (req, res) => {
-  const htmlFilePath = path.join(__dirname, "index.html");
-  fs.readFile(htmlFilePath, "utf8", (err, data) => {
+app.get('/', (req, res) => {
+  const htmlFilePath = path.join(__dirname, '..', 'src', 'index.html');
+  fs.readFile(htmlFilePath, 'utf8', (err, data) => {
     if (err) {
-      res.status(500).send("Error reading HTML file");
+      res.status(500).send('Error reading HTML file');
       return;
     }
     res.send(data);

@@ -63,6 +63,14 @@ services:
     networks:
       - backend
 
+  main-api:
+    build: ./main-api
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - backend
+
 networks:
   backend:
     driver: bridge
