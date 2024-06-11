@@ -5,8 +5,8 @@ CREATE TABLE Project_user (
     project_id INT NOT NULL,
     is_master BOOLEAN NOT NULL,
     PRIMARY KEY (user_id, project_id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (project_id) REFERENCES Project(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES Project(id) ON DELETE CASCADE
 );
 -- +goose StatementEnd
 
