@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes";
 import projectRoutes from "./routes/ProjectManagementRoutes";
+import notificationRoutes from "./routes/notificationRoutes";
 
 dotenv.config({ debug: true });
 console.log(process.env.PORT);
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use("/auth", authRoutes);
 app.use("/project", projectRoutes);
+app.use("/notification", notificationRoutes);
 
 // Endpoint to send the HTML file
 app.get("/", (req, res) => {
