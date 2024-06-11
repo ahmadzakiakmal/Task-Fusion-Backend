@@ -4,7 +4,7 @@ import path from "path";
 import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes";
-import projectRoutes from "./routes/ProjectManagementRoutes";
+import projectRoutes from "./routes/projectManagementRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
 
 dotenv.config({ debug: true });

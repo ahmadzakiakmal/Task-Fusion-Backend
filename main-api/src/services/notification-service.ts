@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, isAxiosError } from "axios";
 import { Request, Response } from "express";
-import projectRoutes from "../routes/ProjectManagementRoutes";
+import projectRoutes from "../routes/projectManagementRoutes";
 
 const notificationURL = process.env.NOTIFICATION_SERVICE;
 
