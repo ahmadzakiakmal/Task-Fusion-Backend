@@ -4,6 +4,7 @@ import { projectManagementServices } from "../services/project-management-servic
 
 const projectRoutes = express.Router();
 
-projectRoutes.post("/create/:userId", projectManagementServices.createProject)
+projectRoutes.post("/create/:userId", projectManagementServices.createProject);
+projectRoutes.get("/all", projectManagementServices.getAllProject);
 
 export default projectRoutes;

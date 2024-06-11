@@ -24,7 +24,22 @@ const createProject = (req: Request, res: Response) => {
     });
 };
 
-const getAllProject = () => {};
+const getAllProject = (req: Request, res: Response) => {
+  axios.get(projectManagementURL + "/projects")
+  .then((resp) => {
+    res.send(resp.data)
+  })
+  .catch((err) => {
+    console.log(err);
+    if (isAxiosError(err)) {
+      console.log(err);
+      return res
+        .status(isNaN(Number(err.response?.status)) ? 500 : Number(err.response?.status))
+        .send({ error: err.name, detail: err.response?.data });
+    }
+    res.status(500).send(err);
+  });
+};
 
 const getOneProject = () => {};
 
