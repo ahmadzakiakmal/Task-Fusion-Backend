@@ -70,6 +70,8 @@ services:
       - ./main-api/.env
     networks:
       - backend
+    ports:
+      - "80:80"
 
 networks:
   backend:
