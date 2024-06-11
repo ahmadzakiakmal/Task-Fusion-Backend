@@ -53,6 +53,23 @@ const editTask = (req: Request, res: Response) => {
 
 const deleteTask = (req: Request, res: Response) => {};
 
-const getAllTask = (req: Request, res: Response) => {};
+const getAllTask = (req: Request, res: Response) => {
+  const { userId } = req.params;
+  axios
+    .get(taskManagementURL + "/tasks?userId=" + userId)
+    .then((resp) => {
+      res.send({
+        userId,
+        tasks: resp.data,
+      });
+    })
+    .catch((err) => {
+      if (isAxiosError(err)) {
+        // console.log(err.response?.data);
+        return res.status(Number(err.response?.status)).send({ error: err.name, detail: err.response?.data });
+      }
+      res.status(500).send(err);
+    });
+};
 
 export const taskManagementServices = { getOneTask, createTask, editTask, deleteTask, getAllTask };
