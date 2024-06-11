@@ -83,7 +83,26 @@ const deleteProject = (req: Request, res: Response) => {
     });
 };
 
-const editProject = () => {};
+const editProject = (req: Request, res: Response) => {
+  const { title, description } = req.body;
+  const { projectId } = req.params;
+  console.log(projectId);
+  axios
+    .put(projectManagementURL + "/projects/" + projectId, { title, description })
+    .then((resp) => {
+      res.send(resp.data);
+    })
+    .catch((err) => {
+      console.log(err);
+      if (isAxiosError(err)) {
+        // console.log(err);
+        return res
+          .status(isNaN(Number(err.response?.status)) ? 500 : Number(err.response?.status))
+          .send({ error: err.name, detail: err.response?.data });
+      }
+      res.status(500).send(err);
+    });
+};
 
 const addMember = () => {};
 

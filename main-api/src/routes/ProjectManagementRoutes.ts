@@ -8,5 +8,6 @@ projectRoutes.post("/create/:userId", projectManagementServices.createProject);
 projectRoutes.get("/all", projectManagementServices.getAllProjects);
 projectRoutes.get("/:projectId", projectManagementServices.getOneProject);
 projectRoutes.delete("/:projectId/:userMasterId", projectManagementServices.deleteProject);
+projectRoutes.put("/:projectId", projectManagementServices.editProject);
 
 export default projectRoutes;
