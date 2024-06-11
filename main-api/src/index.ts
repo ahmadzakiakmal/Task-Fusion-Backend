@@ -4,8 +4,9 @@ import path from "path";
 import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes";
-import projectRoutes from "./routes/projectManagementRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
+import projectRoutes from "./routes/projectManagementRoutes";
+import taskManagementRoutes from "./routes/taskManagementRoutes";
 
 dotenv.config({ debug: true });
 console.log(process.env.PORT);
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/project", projectRoutes);
 app.use("/notification", notificationRoutes);
+app.use("/task", taskManagementRoutes);
 
 // Endpoint to send the HTML file
 app.get("/", (req, res) => {

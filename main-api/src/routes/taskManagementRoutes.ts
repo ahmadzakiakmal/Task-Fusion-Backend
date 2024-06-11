@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import { taskManagementServices } from "../services/task-management-service";
 
-const authRoutes = express.Router();
+const taskManagementRoutes = express.Router();
 
+taskManagementRoutes.post("/", taskManagementServices.createTask);
 
-
-export default authRoutes;
+export default taskManagementRoutes;
