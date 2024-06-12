@@ -11,3 +11,7 @@
 ## Architecture
 
 <img src="https://raw.githubusercontent.com/ahmadzakiakmal/Task-Fusion-Backend/main/docs/assets/architecture.gif" width="900" />
+
+## Entity Relation Diagram
+
+<img src="https://raw.githubusercontent.com/ahmadzakiakmal/Task-Fusion-Backend/main/docs/assets/ERD.jpeg" />
