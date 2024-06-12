@@ -42,12 +42,15 @@ const createTask = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-const editTask = (req: Request, res: Response) => {
+const editTask = (req: Request, res: Response, next: NextFunction) => {
   const { userId, title, description, milestone, deadline } = req.body;
   const { taskId } = req.params;
   axios
     .put(taskManagementURL + "/tasks/" + taskId, { userId, title, description, milestone, deadline })
-    .then((resp) => res.send(resp.data))
+    .then((resp) => {
+      req.body = { message: `user ${userId} mengubah task ${taskId}` };
+      next();
+    })
     .catch((err) => {
       console.log(err);
       if (isAxiosError(err)) {
@@ -58,13 +61,14 @@ const editTask = (req: Request, res: Response) => {
     });
 };
 
-const deleteTask = (req: Request, res: Response) => {
+const deleteTask = (req: Request, res: Response, next: NextFunction) => {
   const { taskId, userId } = req.params;
   console.log(taskManagementURL + `/tasks/${taskId}?userId=${userId}`);
   axios
     .delete(taskManagementURL + `/tasks/${taskId}?userId=${userId}`)
     .then((resp) => {
-      res.send(resp.data);
+      req.body = { message: `user ${userId} menghapus task ${taskId}` };
+      next();
     })
     .catch((err) => {
       console.log(err);
