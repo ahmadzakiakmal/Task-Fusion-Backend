@@ -49,7 +49,7 @@ services:
     build: ./notification-service
     restart: always
     environment:
-      KAFKA_BROKER: <<supersecretip>>
+      KAFKA_BROKER: <<kafkaip>>
     depends_on:
       - auth
     networks:
@@ -64,6 +64,8 @@ services:
       - ./main-api/.env
     networks:
       - backend
+    ports:
+      - "80:80"
 
 networks:
   backend:
