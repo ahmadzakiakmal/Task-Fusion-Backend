@@ -9,8 +9,8 @@ CREATE TABLE task (
     milestone VARCHAR(50) NOT NULL,
     deadline TIMESTAMP NOT NULL,
     created TIMESTAMP NOT NULL,
-    FOREIGN KEY (project_id) REFERENCES Project(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (project_id) REFERENCES Project(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 -- +goose StatementEnd
 
