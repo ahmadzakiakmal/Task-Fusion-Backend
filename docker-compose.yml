@@ -6,16 +6,14 @@ services:
       POSTGRES_DB: taskfusion
       POSTGRES_USER: taskfusion
       POSTGRES_PASSWORD: supersecret
-    ports:
-      - "5432:5432"
     networks:
       - backend
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
   auth:
     build: ./auth-service
     restart: always
-    ports:
-      - "5003:3000"
     networks:
       - backend
     depends_on:
@@ -28,8 +26,6 @@ services:
       DATABASE_URL: "jdbc:postgresql://db:5432/taskfusion"
       DATABASE_USERNAME: taskfusion
       DATABASE_PASSWORD: supersecret
-    ports: 
-      - "5002:8011"
     networks:
       - backend
     depends_on:
@@ -44,8 +40,6 @@ services:
       DB_DATABASE: taskfusion  
       DB_USERNAME: taskfusion 
       DB_PASSWORD: supersecret
-    ports: 
-      - "5004:8080"
     networks:
       - backend
     depends_on:
@@ -55,11 +49,9 @@ services:
     build: ./notification-service
     restart: always
     environment:
-      KAFKA_BROKER: 48.216.224.217
+      KAFKA_BROKER: <<supersecretip>>
     depends_on:
       - auth
-    ports:
-      - "5001:5001"
     networks:
       - backend
 
@@ -72,10 +64,10 @@ services:
       - ./main-api/.env
     networks:
       - backend
-    ports:
-      - "80:80"
 
 networks:
   backend:
     driver: bridge
 
+volumes:
+  db-data:
